@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>İş Öneri Sistemi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+        input, button {
+            padding: 8px;
+            font-size: 16px;
+        }
+        .job {
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        .job h3 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>İş Öneri Sistemi</h1>
+    <label for="userId">Kullanıcı ID:</label>
+    <input type="number" id="userId" placeholder="Örn: 1" />
+    <button onclick="getRecommendations()">Önerileri Getir</button>
+
+    <div id="result"></div>
+
+    <script>
+        function getRecommendations() {
+            const userId = document.getElementById("userId").value;
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = "<p>Yükleniyor...</p>";
+
+            fetch(`/api/jobs/recommend/${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("İstek başarısız: " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    resultDiv.innerHTML = "<h2>Önerilen İşler:</h2>";
+                    data.forEach(job => {
+                        const div = document.createElement("div");
+                        div.className = "job";
+                        div.innerHTML = `
+                            <h3>Eşleşme Düzeyi: ${job.match_level}</h3>
+                            <p><strong>Skor:</strong> ${job.score}</p>
+                            <p><strong>Açıklama:</strong> ${job.description}</p>
+                        `;
+                        resultDiv.appendChild(div);
+                    });
+                })
+                .catch(err => {
+                    resultDiv.innerHTML = `<p style="color: red;">Hata oluştu: ${err.message}</p>`;
+                });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Python sanal ortamı
+ai-matching/venv/
+
+# Java derleme çıktısı
+backend/target/
+
+# Sistem dosyaları
+.DS_Store
+
