@@ -11,11 +11,21 @@ echo "🚀 Python Flask servisi başlatılıyor..."
 cd ai-matching || { echo "❌ ai-matching klasörü bulunamadı"; exit 1; }
 
 if [ ! -d "venv" ]; then
-  echo "⚠️ Sanal ortam bulunamadı. 'python3 -m venv venv' komutuyla oluşturmalısınız."
-  exit 1
+  echo "⚠️ Sanal ortam bulunamadı. Oluşturuluyor..."
+  python3 -m venv venv
 fi
 
 source venv/bin/activate
+
+# 📦 Gerekli Python paketlerini yükle
+if [ -f "requirements.txt" ]; then
+  echo "📦 Python bağımlılıkları yükleniyor..."
+  pip install -r requirements.txt
+else
+  echo "❌ requirements.txt bulunamadı!"
+  exit 1
+fi
+
 python main.py &
 PYTHON_PID=$!
 cd ..
@@ -46,6 +56,7 @@ if [ ! -f "package.json" ]; then
   exit 1
 fi
 
+npm install
 npm start &
 FRONTEND_PID=$!
 cd ..
