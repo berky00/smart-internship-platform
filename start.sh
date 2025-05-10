@@ -11,8 +11,8 @@ echo "🚀 Python Flask servisi başlatılıyor..."
 cd ai-matching || { echo "❌ ai-matching klasörü bulunamadı"; exit 1; }
 
 if [ ! -d "venv" ]; then
-  echo "⚠️ Sanal ortam bulunamadı. Oluşturuluyor..."
-  python3 -m venv venv
+  echo "⚠️ Sanal ortam bulunamadı. 'python3 -m venv venv' komutuyla oluşturmalısınız."
+  exit 1
 fi
 
 source venv/bin/activate
@@ -20,7 +20,7 @@ source venv/bin/activate
 # 📦 Gerekli Python paketlerini yükle
 if [ -f "requirements.txt" ]; then
   echo "📦 Python bağımlılıkları yükleniyor..."
-  pip install -r requirements.txt
+  ./venv/bin/pip install -r requirements.txt
 else
   echo "❌ requirements.txt bulunamadı!"
   exit 1
@@ -56,7 +56,6 @@ if [ ! -f "package.json" ]; then
   exit 1
 fi
 
-npm install
 npm start &
 FRONTEND_PID=$!
 cd ..
@@ -64,12 +63,13 @@ cd ..
 # -------------------------------
 # Bilgilendirme
 # -------------------------------
+echo ""
 echo "✅ Tüm servisler arka planda başlatıldı."
 echo ""
 echo "🌐 Uygulama Bağlantıları:"
 echo " - Frontend:   http://localhost:3000"
 echo " - Backend:    http://localhost:8080"
-echo " - Python API: http://127.0.0.1:5000"
+echo " - Python API: http://127.0.0.1:5001"
 echo ""
 echo "🔚 Tüm servisleri kapatmak için:"
 echo "   kill $PYTHON_PID $BACKEND_PID $FRONTEND_PID"
