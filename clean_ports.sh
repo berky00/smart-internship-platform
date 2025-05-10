@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Flask (5000)
-fpid=$(lsof -ti :5000)
+# Flask (5001)
+fpid=$(lsof -ti :5001)
 if [ ! -z "$fpid" ]; then
-  echo "🧹 Flask (5000) işlemi durduruluyor: PID $fpid"
+  echo "🧹 Flask (5001) işlemi durduruluyor: PID $fpid"
   kill -9 $fpid
 fi
 
