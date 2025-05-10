@@ -1,0 +1,17 @@
+Flask
+flask-cors
+PyPDF2
+sentence-transformers
+transformers
+torch
+torchaudio
+nltk
+scikit-learn
+numpy
+pandas
+requests
+SpeechRecognition
+gTTS
+librosa
+soundfile
+
