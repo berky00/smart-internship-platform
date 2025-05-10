@@ -1,23 +1,24 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import RegisterForm from './components/RegisterForm';
-import JobForm from './components/JobForm';
-import HomePage from './components/HomePage';
-import LoginForm from './components/LoginForm'; // 🔹 Yeni eklenecek
-import RecommendationPage from './components/RecommendationPage'; // 🔹 Yeni eklendi
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import StudentDashboard from "./pages/StudentDashboard";
+import EmployerDashboard from "./pages/EmployerDashboard";
+import RegisterStudent from "./pages/RegisterStudent";
+import RegisterEmployer from "./pages/RegisterEmployer";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginForm />} /> {/* 🔹 Yeni Login sayfası */}
-        <Route path="/register" element={<RegisterForm />} />
-        <Route path="/add-job" element={<JobForm />} />
-        <Route path="/recommend" element={<RecommendationPage />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/student-dashboard" element={<StudentDashboard />} />
+        <Route path="/employer-dashboard" element={<EmployerDashboard />} />
+        <Route path="/register-student" element={<RegisterStudent />} />
+        <Route path="/register-employer" element={<RegisterEmployer />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
+

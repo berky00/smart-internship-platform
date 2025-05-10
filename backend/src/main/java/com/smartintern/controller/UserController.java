@@ -1,18 +1,26 @@
 package com.smartintern.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 
 import com.smartintern.model.User;
 import com.smartintern.service.UserService;
@@ -62,13 +70,22 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody User loginRequest) {
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody User loginRequest) {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
+
         return userService.getUserByEmail(loginRequest.getEmail())
                 .filter(user -> encoder.matches(loginRequest.getPassword(), user.getPassword()))
-                .map(user -> "Login başarılı! Hoşgeldin, " + user.getUsername())
-                .orElse("Login başarısız! Email veya şifre yanlış.");
+                .map(user -> {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("message", "Login başarılı!");
+                    response.put("id", user.getId());
+                    response.put("username", user.getUsername());
+                    response.put("role", user.getRole());
+                    return ResponseEntity.ok(response);
+                })
+                .orElse(ResponseEntity.status(401).body(Map.of("message", "Login başarısız! Email veya şifre yanlış.")));
     }
+
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
